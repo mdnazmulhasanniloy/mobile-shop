@@ -32,7 +32,7 @@ exports.getAllUserService = async () => {
 //update a user
 exports.updateUserService = async (_id, data) => {
   try {
-    console.log(data);
+    // console.log(data);
     const user = await User.findOneAndUpdate(
       { _id: _id },
       { ...data, updateAt: justNow }
@@ -56,4 +56,14 @@ exports.deleteUserService = async (_id) => {
   }
 };
 
-// find user by id
+// get user by email
+exports.getUsersByEmailService = async (data) => {
+  try {
+    // console.log(data);
+    const user = await User.findOne({ email: data });
+    // console.log(user);
+    return user;
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid email address");
+  }
+};

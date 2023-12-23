@@ -7,6 +7,7 @@ const {
   deleteUserService,
   updateUserService,
   getAllUserService,
+  getUsersByEmailService,
 } = require("../service/user.service");
 const sendResponse = require("../utils/sendResponse");
 
@@ -87,6 +88,36 @@ exports.deleteUser = async (req, res, next) => {
       message: "user deleted successfully",
       data: result,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//get user by email
+exports.getUsersByEmail = async (req, res, next) => {
+  try {
+    const email = req.params.email;
+    const result = await getUsersByEmailService(email);
+    if (result) {
+      const token = jwt.sign({ email: result?.email }, access_Token, {
+        expiresIn: "3d",
+      });
+      return sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "user login successfully",
+        data: { ...result?._doc, accessToken: token },
+      });
+    }
+
+    if (!result) {
+      return sendResponse(res, {
+        statusCode: httpStatus.BAD_REQUEST,
+        success: false,
+        message: "user not found",
+        data: result,
+      });
+    }
   } catch (error) {
     next(error);
   }

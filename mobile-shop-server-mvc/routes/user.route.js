@@ -12,4 +12,6 @@ router
   .put(userController?.updateUser)
   .delete(userController?.deleteUser);
 
+router.route("/:email").get(userController?.getUsersByEmail);
+
 module.exports = router;
