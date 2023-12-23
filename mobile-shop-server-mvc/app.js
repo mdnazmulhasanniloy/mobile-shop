@@ -6,10 +6,12 @@ const moment = require("moment");
 app.use(express.json());
 app.use(cors());
 
-const UserRouter = require("./routes/user.route");
 const ErrorHandler = require("./middlewares/globalErrorHandler");
+const UserRouter = require("./routes/user.route");
+const productRouter = require("./routes/product.route");
 
 app.use("/api/v1/user", UserRouter);
+app.use("/api/v1/product", productRouter);
 
 app.get("/", async (req, res, next) => {
   try {
